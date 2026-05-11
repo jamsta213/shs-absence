@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Absence Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <img src="https://drive.google.com/thumbnail?id=12KWoJLRUDRozds2VcJM_WXwbz80fGeV3&sz=w1000" class="logo-header">
+
+  <form id="mainForm" onsubmit="return false;">
+    <div id="step1" class="form-step active">
+      <h1>Absence Form</h1>
+      <div class="field">
+        <label>Full Name</label>
+        <select id="nameSelect" required><option value="">Loading staff...</option></select>
+      </div>
+      <div class="field">
+        <label>Site</label>
+        <select id="siteSelect" required><option value="">Select Site</option></select>
+      </div>
+      <div class="field">
+        <label>Absence Type</label>
+        <select id="absType" required>
+          <option value="">Select...</option>
+          <option value="Sickness">Sickness</option>
+          <option value="Special Leave">Special Leave</option>
+          <option value="Unpaid Leave">Unpaid Leave</option>
+        </select>
+      </div>
+      <button type="button" class="btn-next" onclick="validateStep(1)">Next Step</button>
+    </div>
+
+    <div id="step2-sickness" class="form-step">
+      <h1>Sickness Details</h1>
+      <div class="field">
+        <label>Reason</label>
+        <select id="sickReason" onchange="toggleOther(this, 'otherSickText')">
+          <option value="">Choose...</option>
+          <option>Musculo-skeletal: Back &amp; neck</option>
+          <option>Other Musculo: legs, arms</option>
+          <option>Eyes, ears, nose, dental</option>
+          <option>Chest, respiratory</option>
+          <option>Heart, blood pressure</option>
+          <option>Infectious: cold, flu</option>
+          <option>Headache, migraine</option>
+          <option>Stress, anxiety</option>
+          <option>Genito-urinary, menstrural problems</option>
+          <option>Stomach, vomiting, diarrhoea</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="text" id="otherSickText" class="other-input" placeholder="Please specify sickness reason">
+      </div>
+      <div class="field">
+        <label class="confirm-card"><input type="checkbox" onchange="styleCard(this)"><span class="confirm-label">I confirm I am fit to return to work and this is a true and accurate statement</span></label>
+        <label class="confirm-card"><input type="checkbox" onchange="styleCard(this)"><span class="confirm-label">I understand I must speak my line manager to confirm my return as soon as I return to school</span></label>
+        <label class="confirm-card"><input type="checkbox" onchange="styleCard(this)"><span class="confirm-label">I understand that failure to speak to a senior leader on my return could lead to disciplinary action</span></label>
+      </div>
+      <button type="button" class="btn-next" onclick="validateStep(2)">Next Step</button>
+      <button type="button" class="btn-back" onclick="changeStep('step1')">Back</button>
+    </div>
+
+    <div id="step2-leave" class="form-step">
+      <h1 id="leaveTitle">Leave Details</h1>
+      <div class="field">
+        <label>Reason</label>
+        <select id="leaveReason" onchange="showLeaveInfo()">
+          <option value="">Choose...</option>
+          <option>Doc/Hos App</option>
+          <option>Funeral/Bereavement</option>
+          <option>Training</option>
+          <option>Childcare</option>
+          <option>Maternity related</option>
+          <option>Religious Leave</option>
+          <option value="other">Other</option>
+        </select>
+        <div id="leaveInfoBox" class="other-input">
+          <label id="leaveInfoLabel" style="font-size: 16px; margin-top: 10px;">More Information</label>
+          <input type="text" id="otherLeaveText" placeholder="Please provide details">
+        </div>
+      </div>
+      <div class="field">
+        <label class="confirm-card"><input type="checkbox" onchange="styleCard(this)"><span class="confirm-label">I have spoken to my line manager regarding this request before filling out this form</span></label>
+      </div>
+      <div class="field">
+        <label>Cover Status</label>
+        <select id="coverStatus" onchange="toggleCoverModule()">
+          <option value="none">No cover needed</option>
+          <option value="arranged">I have arranged cover</option>
+        </select>
+      </div>
+
+      <div id="coverModule" style="display:none; position:relative;">
+        <label>Duties Needing Cover</label>
+        <input type="text" id="dutyValidationAnchor">
+        <div class="duty-grid">
+          <div class="duty-chip" onclick="toggleDuty(this)">Before school duty</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Morning break duty</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Lunch duty</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Afternoon play duty</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">After school club</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Trip</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Swimming</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Meeting</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">Class cover</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">General event</div>
+          <div class="duty-chip" onclick="toggleDuty(this)">1-1 with child</div>
+          <div class="duty-chip" onclick="toggleDuty(this, true)">Other:</div>
+        </div>
+        <input type="text" id="otherDutyText" class="other-input" placeholder="Specify other duty">
+        <div class="field">
+          <label>Covered by:</label>
+          <input type="text" id="whoCover" placeholder="Name of staff covering">
+        </div>
+      </div>
+
+      <button type="button" class="btn-next" onclick="validateStep(2)">Next Step</button>
+      <button type="button" class="btn-back" onclick="changeStep('step1')">Back</button>
+    </div>
+
+    <div id="step3-form" class="form-step">
+      <h1>Dates &amp; Times</h1>
+      <div class="field">
+        <label>First Day</label>
+        <input type="date" id="start" required onchange="syncDates()">
+      </div>
+      <div class="field">
+        <label>Last Day</label>
+        <input type="date" id="end" required onchange="validateDates()">
+      </div>
+      <div class="field">
+        <label>Duration</label>
+        <select id="dayType" onchange="toggleHalf()">
+          <option value="full">Full Day</option>
+          <option value="half">Half Day</option>
+        </select>
+      </div>
+      <div id="halfDaySection" style="display:none;">
+        <div class="field">
+          <label>Time Out</label>
+          <input type="time" id="out">
+        </div>
+        <div class="field">
+          <label>Time Return</label>
+          <input type="time" id="ret">
+        </div>
+      </div>
+      <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Request</button>
+      <button type="button" class="btn-back" onclick="goBack()">Back</button>
+    </div>
+
+    <div id="step-success" class="form-step">
+      <div id="success-icon">✓</div>
+      <h1>Request Submitted</h1>
+      <p style="font-weight: 700; color: #444; margin-bottom: 30px;">Thank you. Your absence request has been successfully recorded.</p>
+      <button type="button" class="btn-next" onclick="location.reload()">Submit Another</button>
+    </div>
+  </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
