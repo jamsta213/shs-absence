@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "shs-absence",
+  "name": "shs-absence-form",
   "compatibility_date": "2026-05-11",
   "observability": {
     "enabled": true
