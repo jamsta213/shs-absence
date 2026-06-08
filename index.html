@@ -6,7 +6,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absence Form</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* GLOBAL MOBILE OPTIMIZATION */
+    body, html {
+      font-family: 'DM Sans', sans-serif;
+      background: #FAF8F4;
+      color: #1C1C1A;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+   
+    .container {
+      padding: 30px 15px;
+      text-align: center;
+      max-width: 500px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+   
+    .logo-header { width: 100%; max-width: 280px; margin: 0 auto 20px auto; display: block; height: auto; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 30px; line-height: 1.1; color: #2D5F3F; }
+   
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+   
+    .field { margin-bottom: 30px; text-align: left; width: 100%; }
+    label { display: block; font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #444; }
+
+    /* INPUTS */
+    select, input {
+      width: 100%;
+      max-width: 100%;
+      height: 60px;
+      padding: 0 15px;
+      border: 2px solid #D8D4CC;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      box-sizing: border-box;
+      background-color: #ffffff !important;
+      color: #1C1C1A !important;
+      outline: none;
+      display: block;
+    }
+
+    select { appearance: auto; -webkit-appearance: menulist; }
+
+    input[type="date"], input[type="time"] {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+      line-height: 1.2;
+      -webkit-appearance: none;
+    }
+   
+    input::-webkit-date-and-time-value { text-align: left; width: 100%; }
+
+    /* BUTTONS */
+    .btn-next, .btn-submit { width: 100%; height: 70px; border: none; border-radius: 12px; font-size: 24px; font-weight: 700; cursor: pointer; background: #2D5F3F; color: #FFFFFF; margin-top: 10px; touch-action: manipulation; }
+    .btn-back { width: 100%; height: 70px; border: none; border-radius: 12px; font-size: 24px; font-weight: 700; cursor: pointer; background: #E8E6E1; color: #1C1C1A; margin-top: 10px; touch-action: manipulation; }
+   
+    /* CHECKBOX CARDS */
+    .confirm-card { display: flex; align-items: center; border: 2px solid #D8D4CC; padding: 15px; border-radius: 15px; margin-bottom: 10px; background: #FFF; cursor: pointer; transition: 0.2s; touch-action: manipulation; }
+    .confirm-card input[type="checkbox"] { width: 25px; height: 25px; margin-right: 15px; flex-shrink: 0; accent-color: #FFF; }
+    .confirm-label { font-size: 16px; font-weight: 700; line-height: 1.2; }
+    .confirm-card.selected { background: #007AFF !important; border-color: #007AFF !important; color: #FFF !important; }
+
+    /* DUTY GRID */
+    .duty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .duty-chip { padding: 12px 5px; border: 2px solid #D8D4CC; border-radius: 12px; font-size: 13px; font-weight: 700; background: #fff; display: flex; align-items: center; justify-content: center; min-height: 50px; cursor: pointer; transition: 0.2s; text-align: center; touch-action: manipulation; }
+    .duty-chip.selected { background: #007AFF !important; color: #FFFFFF !important; border-color: #007AFF !important; }
+   
+    .other-input { margin-top: 10px; display: none; }
+    #success-icon { font-size: 60px; color: #2D5F3F; margin-bottom: 20px; }
+
+    .error-banner {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-align: left;
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
@@ -22,7 +112,15 @@
       </div>
       <div class="field">
         <label>Site</label>
-        <select id="siteSelect" required><option value="">Select Site</option></select>
+        <select id="siteSelect" required onchange="updateClassOptions()">
+          <option value="">Select Site</option>
+          <option value="Brunton Place (BP)">Brunton Place (BP)</option>
+          <option value="St Judes Road (SJR)">St Judes Road (SJR)</option>
+        </select>
+      </div>
+      <div class="field" id="classDiv" style="display:none;">
+        <label>Class</label>
+        <select id="classSelect"><option value="">Select Class</option></select>
       </div>
       <div class="field">
         <label>Absence Type</label>
@@ -30,7 +128,7 @@
           <option value="">Select...</option>
           <option value="Sickness">Sickness</option>
           <option value="Special Leave">Special Leave</option>
-          <option value="Unpaid Leave">Unpaid Leaeve</option>
+          <option value="Unpaid Leave">Unpaid Leave</option>
         </select>
       </div>
       <button type="button" class="btn-next" onclick="validateStep(1)">Next Step</button>
@@ -80,7 +178,7 @@
           <option value="other">Other</option>
         </select>
         <div id="leaveInfoBox" class="other-input">
-          <label id="leaveInfoLabel" style="font-size: 16px; margin-top: 10px;">More Information</label>
+          <label id="leaveInfoLabel" style="font-size: 16px; margin-top: 10px;">More Information (Required)</label>
           <input type="text" id="otherLeaveText" placeholder="Please provide details">
         </div>
       </div>
@@ -97,7 +195,7 @@
 
       <div id="coverModule" style="display:none; position:relative;">
         <label>Duties Needing Cover</label>
-        <input type="text" id="dutyValidationAnchor">
+        <input type="text" id="dutyValidationAnchor" style="opacity:0; height:0; position:absolute; pointer-events:none;">
         <div class="duty-grid">
           <div class="duty-chip" onclick="toggleDuty(this)">Before school duty</div>
           <div class="duty-chip" onclick="toggleDuty(this)">Morning break duty</div>
@@ -112,7 +210,7 @@
           <div class="duty-chip" onclick="toggleDuty(this)">1-1 with child</div>
           <div class="duty-chip" onclick="toggleDuty(this, true)">Other:</div>
         </div>
-        <input type="text" id="otherDutyText" class="other-input" placeholder="Specify other duty">
+        <input type="text" id="otherDutyText" class="other-input" placeholder="Specify other duty (Required)">
         <div class="field">
           <label>Covered by:</label>
           <input type="text" id="whoCover" placeholder="Name of staff covering">
