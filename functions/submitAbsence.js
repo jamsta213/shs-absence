@@ -49,21 +49,21 @@ export async function onRequestPost(context) {
 
     /* ── Row data — A to O (15 columns) ─────────────────── */
     const rowValues = [[
-      timestamp,                    // A: Timestamp
-      data.name        || '',       // B: Name
-      data.site        || '',       // C: Site
-      data.absType     || '',       // D: Absence Type
-      data.sickReason  || '',       // E: Sickness Reason
-      data.leaveReason || '',       // F: Leave Reason
-      data.coverStatus || '',       // G: Cover Status
-      data.duties      || '',       // H: Duties
-      data.whoCover    || '',       // I: Who is covering
-      formatToUK(data.start),       // J: First Day
-      formatToUK(data.end),         // K: Last Day
-      data.dayType     || '',       // L: Duration Type
-      data.timeOut     || '',       // M: Time Out
-      data.timeReturn  || '',       // N: Time Return
-      data.staffClass  || '',       // O: Class (new)
+  timestamp,                    // A: Timestamp
+  data.name        || '',       // B: Name
+  data.site        || '',       // C: Site
+  data.staffClass  || '',       // D: Class
+  data.absType     || '',       // E: Absence Type
+  data.sickReason  || '',       // F: Sick Reason
+  data.leaveReason || '',       // G: Leave Reason
+  data.coverStatus || '',       // H: Cover Status
+  data.duties      || '',       // I: Duties
+  data.whoCover    || '',       // J: Who Covers
+  formatToUK(data.start),       // K: First Day
+  formatToUK(data.end),         // L: Last Day
+  data.dayType     || '',       // M: Full/Half
+  data.timeOut     || '',       // N: Time Out
+  data.timeReturn  || '',       // O: Time Return
     ]];
 
     /* ── Write to sheet ──────────────────────────────────── */
