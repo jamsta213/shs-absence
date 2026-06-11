@@ -1,12 +1,13 @@
 /**
- * functions/submitAbsence.js (v2)
+ * functions/submitAbsence.js
  *
- * Updated to include staffClass (column O)
- * Columns A–N remain unchanged so existing sheet data is not disrupted.
+ * Column order: A=Timestamp, B=Name, C=Site, D=Class, E=Absence Type,
+ * F=Sick Reason, G=Leave Reason, H=Cover Status, I=Duties, J=Who Covers,
+ * K=First Day, L=Last Day, M=Full/Half, N=Time Out, O=Time Return
  *
  * Environment variables:
- *   GOOGLE_SERVICE_ACCOUNT_JSON  — full contents of your service account JSON key file
- *   SPREADSHEET_ID               — your Google Sheet ID
+ *   GOOGLE_SERVICE_ACCOUNT_JSON
+ *   SPREADSHEET_ID
  */
 
 export async function onRequestPost(context) {
@@ -23,7 +24,6 @@ export async function onRequestPost(context) {
 
     const credentials = JSON.parse(context.env.GOOGLE_SERVICE_ACCOUNT_JSON);
     const spreadsheetId = context.env.SPREADSHEET_ID;
-
     const token = await getAccessToken(credentials);
 
     /* ── Find next free row in column A ──────────────────── */
@@ -32,9 +32,7 @@ export async function onRequestPost(context) {
       `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${colARange}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
-
     if (!colARes.ok) throw new Error(`Sheets API error reading column A: ${await colARes.text()}`);
-
     const colAData = await colARes.json();
     const nextRow = (colAData.values || []).length + 1;
 
@@ -47,23 +45,23 @@ export async function onRequestPost(context) {
 
     const timestamp = new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' });
 
-    /* ── Row data — A to O (15 columns) ─────────────────── */
+    /* ── Row data A to O ─────────────────────────────────── */
     const rowValues = [[
-  timestamp,                    // A: Timestamp
-  data.name        || '',       // B: Name
-  data.site        || '',       // C: Site
-  data.staffClass  || '',       // D: Class
-  data.absType     || '',       // E: Absence Type
-  data.sickReason  || '',       // F: Sick Reason
-  data.leaveReason || '',       // G: Leave Reason
-  data.coverStatus || '',       // H: Cover Status
-  data.duties      || '',       // I: Duties
-  data.whoCover    || '',       // J: Who Covers
-  formatToUK(data.start),       // K: First Day
-  formatToUK(data.end),         // L: Last Day
-  data.dayType     || '',       // M: Full/Half
-  data.timeOut     || '',       // N: Time Out
-  data.timeReturn  || '',       // O: Time Return
+      timestamp,                    // A: Timestamp
+      data.name        || '',       // B: Name
+      data.site        || '',       // C: Site
+      data.staffClass  || '',       // D: Class
+      data.absType     || '',       // E: Absence Type
+      data.sickReason  || '',       // F: Sick Reason
+      data.leaveReason || '',       // G: Leave Reason
+      data.coverStatus || '',       // H: Cover Status
+      data.duties      || '',       // I: Duties
+      data.whoCover    || '',       // J: Who Covers
+      formatToUK(data.start),       // K: First Day
+      formatToUK(data.end),         // L: Last Day
+      data.dayType     || '',       // M: Full/Half
+      data.timeOut     || '',       // N: Time Out
+      data.timeReturn  || '',       // O: Time Return
     ]];
 
     /* ── Write to sheet ──────────────────────────────────── */
@@ -79,7 +77,6 @@ export async function onRequestPost(context) {
         body: JSON.stringify({ values: rowValues }),
       }
     );
-
     if (!writeRes.ok) throw new Error(`Sheets API error writing row: ${await writeRes.text()}`);
 
     return new Response(JSON.stringify({ success: true }), {
