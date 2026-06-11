@@ -41,9 +41,9 @@ function updateClassOptions() {
   classSelect.innerHTML = '<option value="">Select Class</option>';
 
   var options = [];
-  if (site === 'Brunton Place (BP)') {
+  if (site === 'Brunton Place') {
     options = ['Red', 'Green', 'Blue', 'Yellow', 'Purple', 'Orange', 'Pink'];
-  } else if (site === 'St Judes Road (SJR)') {
+  } else if (site === 'St Judes Road') {
     options = ['Pink', 'Blue', 'Red', 'Orange', 'Yellow', 'Green'];
   }
 
