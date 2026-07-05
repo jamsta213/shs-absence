@@ -42,7 +42,7 @@ function updateClassOptions() {
 
   var options = [];
   if (site === 'Brunton Place') {
-    options = ['Red', 'Green', 'Blue', 'Yellow', 'Purple', 'Orange', 'Pink'];
+    options = ['Red', 'Green', 'Blue', 'Yellow', 'Purple', 'Orange', 'Pink', 'Turquoise'];
   } else if (site === 'St Judes') {
     options = ['Pink', 'Blue', 'Red', 'Orange', 'Yellow', 'Green'];
   }
