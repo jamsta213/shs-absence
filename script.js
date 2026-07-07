@@ -176,8 +176,8 @@ function validateStep(s) {
         return;
       } else { otherDutyText.setCustomValidity(''); }
 
-      var wc = document.getElementById('whoCover');
-      if (!wc.value) { wc.setCustomValidity('Please specify name'); wc.reportValidity(); return; } else { wc.setCustomValidity(''); }
+      var wc = document.getElementById('Notes');
+      if (!wc.value) { wc.setCustomValidity('Please add notes'); wc.reportValidity(); return; } else { wc.setCustomValidity(''); }
     }
   }
 
@@ -227,7 +227,7 @@ function submitForm() {
     leaveReason: leaveReasonVal,
     coverStatus: document.getElementById('coverStatus').value,
     duties:      dutiesArr.join(', '),
-    whoCover:    document.getElementById('whoCover').value,
+    whoCover:    document.getElementById('Notes').value,
     start:       start.value,
     end:         end.value,
     dayType:     dayType,
