@@ -186,6 +186,56 @@ function validateStep(s) {
 
 /* ── Form submission ─────────────────────────────────────── */
 
+function showSummary() {
+  var start   = document.getElementById('start');
+  var end     = document.getElementById('end');
+  var dayType = document.getElementById('dayType').value;
+  var tOut    = document.getElementById('out');
+  var tRet    = document.getElementById('ret');
+
+  validateDates();
+  if (!start.reportValidity() || !end.reportValidity()) return;
+
+  if (dayType === 'half') {
+    if (!tOut.value) { tOut.setCustomValidity('Required'); tOut.reportValidity(); return; } else { tOut.setCustomValidity(''); }
+    if (!tRet.value) { tRet.setCustomValidity('Required'); tRet.reportValidity(); return; } else { tRet.setCustomValidity(''); }
+  }
+
+  var absType = document.getElementById('absType').value;
+  var html = '';
+
+   html += '<b>Name:</b> ' + document.getElementById('nameSelect').value + '<br>';
+   html += '<b>Site:</b> ' + document.getElementById('siteSelect').value + '<br>';
+   html += '<b>Class:</b> ' + document.getElementById('classSelect').value + '<br>';
+   html += '<b>Absence Type:</b> ' + absType + '<br>';
+
+  if (absType === 'Sickness') {
+    var sickReason = document.getElementById('sickReason').value === 'other'
+      ? document.getElementById('otherSickText').value
+      : document.getElementById('sickReason').value;
+    html += '<b>Reason:</b> ' + sickReason + '<br>';
+  } else {
+    var leaveReason = document.getElementById('leaveReason').value;
+    var leaveInfo   = document.getElementById('otherLeaveText').value;
+    html += '<b>Reason:</b> ' + leaveReason + (leaveInfo ? ': ' + leaveInfo : '') + '<br>';
+    if (document.getElementById('coverStatus').value === 'arranged') {
+      var duties = Array.from(document.querySelectorAll('.duty-chip.selected'))
+        .map(function(el) { return el.textContent.replace(':', '').trim(); }).join(', ');
+      var notes = document.getElementById('Notes').value;
+      html += '<b>Cover needed for:</b> ' + duties + '<br>';
+      if (notes) html += '<b>Notes:</b> ' + notes + '<br>';
+    }
+  }
+
+  html += '<hr>';
+  html += '<b>First Day:</b> ' + start.value + '<br>';
+  html += '<b>Last Day:</b> ' + end.value + '<br>';
+  html += '<b>Duration:</b> ' + (dayType === 'half' ? 'Half Day (' + tOut.value + ' – ' + tRet.value + ')' : 'Full Day') + '<br>';
+
+  document.getElementById('previewArea').innerHTML = html;
+  changeStep('step-confirm');
+}
+
 function submitForm() {
   var start   = document.getElementById('start');
   var end     = document.getElementById('end');
@@ -220,8 +270,6 @@ function submitForm() {
 
   var payload = {
     name:        document.getElementById('nameSelect').value,
-    site:        document.getElementById('siteSelect').value,
-    staffClass:  document.getElementById('classSelect').value,
     absType:     document.getElementById('absType').value,
     sickReason:  sickReasonVal,
     leaveReason: leaveReasonVal,
@@ -237,7 +285,7 @@ function submitForm() {
 
   var btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = 'Submitting...';
+  btn.textContent = 'Review and Submit...';
 
   var existing = document.getElementById('submitErrorBanner');
   if (existing) existing.remove();
