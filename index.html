@@ -247,15 +247,22 @@
           <input type="time" id="ret">
         </div>
       </div>
-      <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Request</button>
+      <button type="button" class="btn-next" onclick="showSummary()">Review & Submit</button>
       <button type="button" class="btn-back" onclick="goBack()">Back</button>
     </div>
+
+    <div id="step-confirm" class="form-step">
+  <h1>Review & Confirm</h1>
+  <div id="previewArea" style="background:#fff; border:2px solid #D8D4CC; border-radius:12px; padding:20px; text-align:left; margin-bottom:20px; font-size:15px; line-height:1.8;"></div>
+  <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Request</button>
+  <button type="button" class="btn-back" onclick="changeStep('step3-form')">Back</button>
+      </div>
 
     <div id="step-success" class="form-step">
       <div id="success-icon">✓</div>
       <h1>Request Submitted</h1>
       <p style="font-weight: 700; color: #444; margin-bottom: 30px;">Thank you. Your absence request has been successfully recorded.</p>
-      <button type="button" class="btn-next" onclick="location.reload()">Submit Another</button>
+     <button type="button" class="btn-next" onclick="location.reload()">Submit Another</button>
     </div>
   </form>
 </div>
