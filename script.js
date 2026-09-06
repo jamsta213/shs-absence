@@ -269,18 +269,20 @@ function submitForm() {
     : sickReasonEl.value;
 
   var payload = {
-    name:        document.getElementById('nameSelect').value,
-    absType:     document.getElementById('absType').value,
-    sickReason:  sickReasonVal,
-    leaveReason: leaveReasonVal,
-    coverStatus: document.getElementById('coverStatus').value,
-    duties:      dutiesArr.join(', '),
-    whoCover:    document.getElementById('Notes').value,
-    start:       start.value,
-    end:         end.value,
-    dayType:     dayType,
-    timeOut:     tOut.value,
-    timeReturn:  tRet.value
+  name:        document.getElementById('nameSelect').value,
+  site:        document.getElementById('siteSelect').value,
+  staffClass:  document.getElementById('classSelect').value,
+  absType:     document.getElementById('absType').value,
+  sickReason:  sickReasonVal,
+  leaveReason: leaveReasonVal,
+  coverStatus: document.getElementById('coverStatus').value,
+  duties:      dutiesArr.join(', '),
+  whoCover:    document.getElementById('Notes').value,
+  start:       start.value,
+  end:         end.value,
+  dayType:     dayType,
+  timeOut:     tOut.value,
+  timeReturn:  tRet.value
   };
 
   var btn = document.getElementById('submitBtn');
